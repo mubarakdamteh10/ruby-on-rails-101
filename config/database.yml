@@ -1,0 +1,36 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DB_HOST", "127.0.0.1") %>
+  port: <%= ENV.fetch("DB_PORT", 5432) %>
+  username: <%= ENV.fetch("DB_USER", "maibok") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "password") %>
+
+development:
+  <<: *default
+  database: rails_101
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: rails_101_test
+
+production:
+  primary:
+    <<: *default
+    database: rails_101_production
+  cache:
+    <<: *default
+    database: rails_101_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: rails_101_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    database: rails_101_production_cable
+    migrations_paths: db/cable_migrate
