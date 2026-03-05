@@ -9,36 +9,46 @@
 #   end
 employees = [
   {
-    employee_id: "EMP-001",
+    code: "EMP-001",
     name: "Alice Johnson",
+    department: "Engineering",
+    position: "Backend Developer",
     email: "alice.johnson@example.com",
     phone: "+1-555-0101",
     address: "123 Main St, New York, NY"
   },
   {
-    employee_id: "EMP-002",
+    code: "EMP-002",
     name: "Brian Lee",
+    department: "Product",
+    position: "Product Manager",
     email: "brian.lee@example.com",
     phone: "+1-555-0102",
     address: "456 Pine Ave, San Francisco, CA"
   },
   {
-    employee_id: "EMP-003",
+    code: "EMP-003",
     name: "Carla Gomez",
+    department: "Design",
+    position: "UI Designer",
     email: "carla.gomez@example.com",
     phone: "+1-555-0103",
     address: "789 Oak Blvd, Austin, TX"
   },
   {
-    employee_id: "EMP-004",
-    name: "Anacondé Sung",
+    code: "EMP-004",
+    name: "Anaconde Sung",
+    department: "Human Resources",
+    position: "HR Specialist",
     email: "anaconde@example.com",
     phone: "+1-555-0104",
     address: "777 Bang sue, Bangkok, BKK"
   },
   {
-    employee_id: "EMP-005",
+    code: "EMP-005",
     name: "Sung Jin woo",
+    department: "Operations",
+    position: "Operations Lead",
     email: "im_the_best@example.com",
     phone: "+1-555-0107",
     address: "999 Myeongdong, Seoul, KR"
@@ -46,7 +56,7 @@ employees = [
 ]
 
 employees.each do |employee_attributes|
-  Employee.find_or_create_by!(employee_id: employee_attributes[:employee_id]) do |employee|
+  Employee.find_or_create_by!(code: employee_attributes[:code]) do |employee|
     employee.assign_attributes(employee_attributes)
   end
 end

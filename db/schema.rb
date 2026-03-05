@@ -10,18 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_05_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_06_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "employees", force: :cascade do |t|
+  create_table "employees", primary_key: "employee_id", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "address", null: false
+    t.string "code", null: false
     t.datetime "created_at", null: false
+    t.string "created_by"
+    t.string "department", null: false
     t.string "email", null: false
-    t.string "employee_id", null: false
     t.string "name", null: false
     t.string "phone", null: false
+    t.string "position", null: false
     t.datetime "updated_at", null: false
-    t.index ["employee_id"], name: "index_employees_on_employee_id", unique: true
+    t.string "updated_by"
+    t.index ["code"], name: "index_employees_on_code", unique: true
   end
 end
