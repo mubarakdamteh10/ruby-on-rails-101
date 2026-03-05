@@ -1,33 +1,45 @@
+class EmployeeController < ApplicationController
+  before_action :set_employee, only: [ :show, :edit, :update, :destroy ]
 
-# get all 
-get "/employees", to: "employee#index"
-def get_all_employees
-    employees = Employee.all
-    render json: employees
-end
-# get by employee_id
-get "/employees/:id", to: "employee#show"
-def get_employee_by_id
-    employee = Employee.find(params[:id])
-    render json: employee
-end
-# create employee
-post "/employees", to: "employee#create"
-def create_employee
-    employee = Employee.create(params)
-    render json: employee
-end
-# update employee
-put "/employees/:id", to: "employee#update"
-def update_employee
-    employee = Employee.find(params[:id])
-    employee.update(params)
-    render json: employee
-end
-# delete employee
-delete "/employees/:id", to: "employee#destroy"
-def delete_employee
-    employee = Employee.find(params[:id])
-    employee.destroy
-    render json: { message: "Employee deleted successfully" }
+  def index
+    @employees = Employee.order(:employee_id)
+  end
+
+  def show_all
+    @employees = Employee.order(:employee_id)
+  end
+
+  def create
+    @employee = Employee.new(employee_params)
+
+    if @employee.save
+      redirect_to root_path, notice: "Employee created successfully."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+
+  def update
+    if @employee.update(employee_params)
+      redirect_to root_path, notice: "Employee updated successfully."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @employee.destroy
+    redirect_to root_path, notice: "Employee deleted successfully."
+  end
+
+  private
+  def set_employee
+    @employee = Employee.find(params[:id])
+  end
+
+  private
+  def employee_params
+    params.require(:employee).permit(:employee_id, :name, :email, :phone, :address)
+  end
 end
