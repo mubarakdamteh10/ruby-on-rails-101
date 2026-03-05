@@ -1,0 +1,38 @@
+<h1>Employees</h1>
+
+<% if notice.present? %>
+  <p><%= notice %></p>
+<% end %>
+
+<p>
+  <%= link_to "Create Employee", new_employee_path %>
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Employee ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= employee.employee_id %></td>
+        <td><%= employee.name %></td>
+        <td><%= employee.email %></td>
+        <td><%= employee.phone %></td>
+        <td><%= employee.address %></td>
+        <td>
+          <%= link_to "View", employee_path(employee) %>
+          <%= link_to "Edit", edit_employee_path(employee) %>
+          <%= button_to "Delete", employee_path(employee), method: :delete, form: { data: { turbo_confirm: "Delete this employee?" } } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

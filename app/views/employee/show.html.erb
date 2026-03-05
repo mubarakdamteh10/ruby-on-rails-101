@@ -1,0 +1,12 @@
+<h1>Employee Detail</h1>
+
+<p><strong>Employee ID:</strong> <%= @employee.employee_id %></p>
+<p><strong>Name:</strong> <%= @employee.name %></p>
+<p><strong>Email:</strong> <%= @employee.email %></p>
+<p><strong>Phone:</strong> <%= @employee.phone %></p>
+<p><strong>Address:</strong> <%= @employee.address %></p>
+
+<p>
+  <%= link_to "Edit", edit_employee_path(@employee) %>
+  <%= link_to "Back to Employees", root_path %>
+</p>

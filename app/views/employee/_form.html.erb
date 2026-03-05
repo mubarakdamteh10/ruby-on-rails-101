@@ -1,0 +1,39 @@
+<% if employee.errors.any? %>
+  <h2><%= pluralize(employee.errors.count, "error") %> prevented saving:</h2>
+  <ul>
+    <% employee.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_with model: employee, local: true do |form| %>
+  <p>
+    <%= form.label :employee_id %><br>
+    <%= form.text_field :employee_id %>
+  </p>
+
+  <p>
+    <%= form.label :name %><br>
+    <%= form.text_field :name %>
+  </p>
+
+  <p>
+    <%= form.label :email %><br>
+    <%= form.email_field :email %>
+  </p>
+
+  <p>
+    <%= form.label :phone %><br>
+    <%= form.text_field :phone %>
+  </p>
+
+  <p>
+    <%= form.label :address %><br>
+    <%= form.text_field :address %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
