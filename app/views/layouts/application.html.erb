@@ -47,14 +47,17 @@
                 <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-blue-500/20 shadow-lg group-hover:scale-110 transition-transform">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                 </div>
-                <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">TeamTrain</span>
+                <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">HRMS</span>
               <% end %>
             </div>
             <!-- Desktop Links -->
             <div class="hidden sm:ml-8 sm:flex sm:space-x-8">
-              <%= link_to "Employees", root_path, class: "border-blue-500 text-slate-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" %>
-              <a href="#" class="border-transparent text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-500 hover:text-slate-700 dark:hover:text-slate-200 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-all">Analytics</a>
-              <a href="#" class="border-transparent text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-500 hover:text-slate-700 dark:hover:text-slate-200 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-all">Settings</a>
+              <% active_link_class = "border-blue-500 text-slate-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-all" %>
+              <% inactive_link_class = "border-transparent text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-500 hover:text-slate-700 dark:hover:text-slate-200 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-all" %>
+              
+              <%= link_to "Employees", root_path, class: (current_page?(root_path) || controller_name == 'employee' ? active_link_class : inactive_link_class) %>
+              <%= link_to "Attendances", attendances_path, class: (controller_name == 'attendances' ? active_link_class : inactive_link_class) %>
+              <a href="#" class="<%= inactive_link_class %>">Settings</a>
             </div>
           </div>
 
