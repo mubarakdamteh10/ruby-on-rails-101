@@ -14,11 +14,6 @@
 <%= form_with model: employee, local: true, class: "space-y-6" do |form| %>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div class="space-y-2">
-      <%= form.label :employee_id, "Employee ID", class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
-      <%= form.text_field :employee_id, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
-    </div>
-
-    <div class="space-y-2">
       <%= form.label :name, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
       <%= form.text_field :name, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
     </div>
