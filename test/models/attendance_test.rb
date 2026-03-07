@@ -78,11 +78,11 @@ class AttendanceTest < ActiveSupport::TestCase
     assert_equal 0, attendance.over_time_hour
   end
 
-  test "sets overtime to 1 when duration > 8 hours" do
+  test "sets overtime to 1 when duration is 9 hours" do
     # Arrange
     employee = mock_employee
     check_in = Time.zone.parse("2026-03-07 08:00:00")
-    check_out = check_in + 8.hours + 1.minute # 8h 1m
+    check_out = check_in + 9.hours # 9h 0m
 
     # Act
     attendance = Attendance.create!(
@@ -92,7 +92,7 @@ class AttendanceTest < ActiveSupport::TestCase
     )
 
     # Assert
-    assert_equal "8h 1m", attendance.duration
+    assert_equal "9h 0m", attendance.duration
     assert_equal 1, attendance.over_time_hour
   end
 
