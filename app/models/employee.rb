@@ -1,5 +1,6 @@
 class Employee < ApplicationRecord
   self.primary_key = "employee_id"
+  has_many :attendances, dependent: :destroy
 
   validates :name, presence: true
   validates :code, presence: true
