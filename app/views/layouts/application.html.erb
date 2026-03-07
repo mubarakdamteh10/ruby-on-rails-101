@@ -57,7 +57,7 @@
               
               <%= link_to "Employees", root_path, class: (current_page?(root_path) || controller_name == 'employee' ? active_link_class : inactive_link_class) %>
               <%= link_to "Attendances", attendances_path, class: (controller_name == 'attendances' ? active_link_class : inactive_link_class) %>
-              <a href="#" class="<%= inactive_link_class %>">Settings</a>
+              <%= link_to "Payroll", payroll_index_path, class: (controller_name == 'payroll' ? active_link_class : inactive_link_class) %>
             </div>
           </div>
 

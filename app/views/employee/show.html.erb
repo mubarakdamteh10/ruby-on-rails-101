@@ -9,7 +9,7 @@
     <p><strong class="text-slate-900 dark:text-white">Phone:</strong> <%= @employee.phone %></p>
     <p><strong class="text-slate-900 dark:text-white">Department:</strong> <%= @employee.department %></p>
     <p><strong class="text-slate-900 dark:text-white">Position:</strong> <%= @employee.position %></p>
-    <p><strong class="text-slate-900 dark:text-white">Salary:</strong> <%= number_to_currency(@employee.salary) %></p>
+    <p><strong class="text-slate-900 dark:text-white">Salary:</strong> <%= number_to_currency(@employee.salary, unit: "฿", format: "%n %u") %></p>
     <p><strong class="text-slate-900 dark:text-white">Is Taxed:</strong> <%= @employee.is_tax ? 'Yes' : 'No' %></p>
     <p class="md:col-span-2"><strong class="text-slate-900 dark:text-white">Address:</strong> <%= @employee.address %></p>
   </div>

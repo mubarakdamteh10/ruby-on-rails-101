@@ -17,5 +17,11 @@ Rails.application.routes.draw do
   post "attendances/:code/check_in", to: "attendances#check_in", as: :check_in_attendance
   patch "attendances/:code/check_out", to: "attendances#check_out", as: :check_out_attendance
 
+  resources :payroll, only: [ :index ] do
+    collection do
+      post :calculate
+    end
+  end
+
   root "employee#show_all"
 end

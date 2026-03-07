@@ -1,0 +1,123 @@
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 p-6 transition-colors duration-200">
+  <div class="mx-auto max-w-7xl">
+    <!-- Header -->
+    <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div>
+        <h1 class="text-4xl font-black text-slate-900 dark:text-white tracking-tight">Payroll Management</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-2 text-lg">
+          Managing payments for <span class="font-bold text-blue-600 dark:text-blue-400"><%= Date::MONTHNAMES[@month] %> <%= @year %></span>
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <!-- Month/Year selector could go here -->
+        <%= button_to calculate_payroll_index_path(month: @month, year: @year), method: :post, class: "group relative active:scale-95 transition-transform" do %>
+          <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl blur opacity-25 group-hover:opacity-100 transition duration-500"></div>
+          <div class="relative flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            <span>Run Calculation</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Payroll Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden mb-8">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700">
+              <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Employee</th>
+              <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Base Salary</th>
+              <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">OT Pay</th>
+              <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Gross Income</th>
+              <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">Tax %</th>
+              <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Tax Amount</th>
+              <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Net Amount</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            <% @employees.each do |employee| %>
+              <% payroll = @payrolls.find { |p| p.employee_code == employee.code } %>
+              <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors group">
+                <td class="px-6 py-5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 font-bold group-hover:scale-110 transition-transform">
+                      <%= employee.name[0] %>
+                    </div>
+                    <div>
+                      <div class="font-bold text-slate-900 dark:text-white"><%= employee.name %></div>
+                      <div class="text-xs text-slate-500 dark:text-slate-400"><%= employee.position %></div>
+                    </div>
+                  </div>
+                </td>
+                
+                <td class="px-6 py-5 text-right font-medium text-slate-700 dark:text-slate-300">
+                  <%= number_to_currency(employee.salary || 0, unit: "฿", format: "%n %u") %>
+                </td>
+
+                <% if payroll %>
+                  <td class="px-6 py-5 text-right text-amber-600 dark:text-amber-400 font-bold">
+                    + <%= number_to_currency(payroll.ot_payment, unit: "฿", format: "%n %u") %>
+                    <div class="text-[10px] opacity-70">(<%= payroll.total_ot_hours.to_i %>h OT)</div>
+                  </td>
+                  <td class="px-6 py-5 text-right font-bold text-slate-900 dark:text-white">
+                    <%= number_to_currency(payroll.gross_salary, unit: "฿", format: "%n %u") %>
+                  </td>
+                  <td class="px-6 py-5 text-center">
+                    <span class="px-2 py-1 rounded text-xs font-black <%= payroll.tax_percentage > 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' %>">
+                      <%= payroll.tax_percentage %>%
+                    </span>
+                  </td>
+                  <td class="px-6 py-5 text-right text-rose-600 dark:text-rose-400 font-bold">
+                    - <%= number_to_currency(payroll.tax_amount, unit: "฿", format: "%n %u") %>
+                  </td>
+                  <td class="px-6 py-5 text-right">
+                    <div class="text-lg font-black text-blue-600 dark:text-blue-400">
+                      <%= number_to_currency(payroll.net_amount, unit: "฿", format: "%n %u") %>
+                    </div>
+                  </td>
+                <% else %>
+                  <td colspan="5" class="px-6 py-5 text-center text-slate-400 italic text-sm">
+                    Pending calculation...
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Info Card -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-indigo-600 rounded-[2rem] p-8 text-white shadow-xl shadow-indigo-500/20 relative overflow-hidden">
+        <div class="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+        <h3 class="text-indigo-100 font-bold uppercase tracking-widest text-xs mb-4">Total Payroll Cost</h3>
+        <div class="text-3xl font-black">
+          <%= number_to_currency(@payrolls.sum(:net_amount), unit: "฿", format: "%n %u") %>
+        </div>
+        <p class="mt-4 text-indigo-100 text-sm opacity-80">Final amount to be paid after taxes and OT for this period.</p>
+      </div>
+      
+      <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2rem] p-8 shadow-sm">
+        <h3 class="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest text-xs mb-4">Current Period</h3>
+        <div class="text-2xl font-bold text-slate-900 dark:text-white">
+          <%= Date::MONTHNAMES[@month] %> <%= @year %>
+        </div>
+        <div class="mt-4 flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Status: Active
+        </div>
+      </div>
+      
+      <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2rem] p-8 shadow-sm">
+        <h3 class="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest text-xs mb-4">Tax Summary</h3>
+        <div class="text-2xl font-bold text-rose-600 dark:text-rose-400">
+          <%= number_to_currency(@payrolls.sum(:tax_amount), unit: "฿", format: "%n %u") %>
+        </div>
+        <p class="mt-4 text-slate-500 dark:text-slate-400 text-sm">Total tax withholdings across all employees.</p>
+      </div>
+    </div>
+  </div>
+</div>
