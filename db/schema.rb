@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_07_070204) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_07_080914) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,11 +18,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_07_070204) do
     t.datetime "check_in"
     t.datetime "check_out"
     t.datetime "created_at", null: false
-    t.uuid "employee_id", null: false
+    t.string "employee_code", null: false
     t.integer "over_time_hour"
     t.datetime "timestamp"
     t.datetime "updated_at", null: false
-    t.index ["employee_id"], name: "index_attendances_on_employee_id"
+    t.index ["employee_code"], name: "index_attendances_on_employee_code"
   end
 
   create_table "employees", primary_key: "employee_id", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -41,6 +41,4 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_07_070204) do
     t.string "updated_by"
     t.index ["code"], name: "index_employees_on_code", unique: true
   end
-
-  add_foreign_key "attendances", "employees", primary_key: "employee_id"
 end

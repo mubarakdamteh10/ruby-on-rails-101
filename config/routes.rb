@@ -11,5 +11,10 @@ Rails.application.routes.draw do
 
   resources :employees, controller: "employee"
   get "showAll", to: "employee#show_all", as: :show_all_employees
+
+  resources :attendances, only: [ :index ]
+  get "attendances/:code", to: "attendances#show", as: :employee_attendance
+  post "attendances/:code", to: "attendances#create"
+
   root "employee#show_all"
 end
