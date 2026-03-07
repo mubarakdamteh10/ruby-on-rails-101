@@ -1,7 +1,19 @@
-<h1>Edit Employee</h1>
+<div class="mx-auto max-w-3xl mt-12 p-8 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 transition-all">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Edit Employee</h1>
+    <div class="flex gap-4">
+      <%= link_to @employee, class: "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors" do %>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+      <% end %>
+      <%= link_to root_path, class: "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors" do %>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      <% end %>
+    </div>
+  </div>
 
-<%= render "form", employee: @employee %>
+  <%= render "form", employee: @employee %>
 
-<p>
-  <%= link_to "Back to Employees", root_path %>
-</p>
+  <div class="mt-8 border-t border-slate-100 dark:border-slate-700 pt-6">
+    <%= link_to "← Back to Employees", root_path, class: "text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors" %>
+  </div>
+</div>

@@ -1,12 +1,16 @@
-<h1>Employee Detail</h1>
+<div class="mx-auto max-w-2xl mt-12 p-6 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+  <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Employee Detail</h1>
 
-<p><strong>Employee ID:</strong> <%= @employee.employee_id %></p>
-<p><strong>Name:</strong> <%= @employee.name %></p>
-<p><strong>Email:</strong> <%= @employee.email %></p>
-<p><strong>Phone:</strong> <%= @employee.phone %></p>
-<p><strong>Address:</strong> <%= @employee.address %></p>
+  <div class="space-y-4 text-slate-700 dark:text-slate-300">
+    <p><strong class="text-slate-900 dark:text-white">Employee ID:</strong> <%= @employee.employee_id %></p>
+    <p><strong class="text-slate-900 dark:text-white">Name:</strong> <%= @employee.name %></p>
+    <p><strong class="text-slate-900 dark:text-white">Email:</strong> <%= @employee.email %></p>
+    <p><strong class="text-slate-900 dark:text-white">Phone:</strong> <%= @employee.phone %></p>
+    <p><strong class="text-slate-900 dark:text-white">Address:</strong> <%= @employee.address %></p>
+  </div>
 
-<p>
-  <%= link_to "Edit", edit_employee_path(@employee) %>
-  <%= link_to "Back to Employees", root_path %>
-</p>
+  <div class="mt-8 flex gap-4">
+    <%= link_to "Edit", edit_employee_path(@employee), class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition" %>
+    <%= link_to "Back to Employees", root_path, class: "rounded-md border border-slate-300 dark:border-slate-600 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition" %>
+  </div>
+</div>

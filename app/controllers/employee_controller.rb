@@ -9,6 +9,13 @@ class EmployeeController < ApplicationController
     @employees = Employee.order(:employee_id)
   end
 
+  def new
+    @employee = Employee.new
+  end
+
+  def edit
+  end
+
   def create
     @employee = Employee.new(employee_params)
 

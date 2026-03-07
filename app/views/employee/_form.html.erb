@@ -1,39 +1,45 @@
-<% if employee.errors.any? %>
-  <h2><%= pluralize(employee.errors.count, "error") %> prevented saving:</h2>
-  <ul>
-    <% employee.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-  </ul>
+<% if employee&.errors&.any? %>
+  <div class="mb-6 p-4 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 transition-colors">
+    <h2 class="text-rose-800 dark:text-rose-300 font-semibold mb-2">
+      <%= pluralize(employee.errors.count, "error") %> prevented saving:
+    </h2>
+    <ul class="list-disc list-inside text-rose-700 dark:text-rose-400 text-sm">
+      <% employee.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>
 
-<%= form_with model: employee, local: true do |form| %>
-  <p>
-    <%= form.label :employee_id %><br>
-    <%= form.text_field :employee_id %>
-  </p>
+<%= form_with model: employee, local: true, class: "space-y-6" do |form| %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="space-y-2">
+      <%= form.label :employee_id, "Employee ID", class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+      <%= form.text_field :employee_id, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
+    </div>
 
-  <p>
-    <%= form.label :name %><br>
-    <%= form.text_field :name %>
-  </p>
+    <div class="space-y-2">
+      <%= form.label :name, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+      <%= form.text_field :name, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
+    </div>
 
-  <p>
-    <%= form.label :email %><br>
-    <%= form.email_field :email %>
-  </p>
+    <div class="space-y-2">
+      <%= form.label :email, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+      <%= form.email_field :email, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
+    </div>
 
-  <p>
-    <%= form.label :phone %><br>
-    <%= form.text_field :phone %>
-  </p>
+    <div class="space-y-2">
+      <%= form.label :phone, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+      <%= form.text_field :phone, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
+    </div>
 
-  <p>
-    <%= form.label :address %><br>
-    <%= form.text_field :address %>
-  </p>
+    <div class="space-y-2 md:col-span-2">
+      <%= form.label :address, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+      <%= form.text_area :address, rows: 3, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
+    </div>
+  </div>
 
-  <p>
-    <%= form.submit %>
-  </p>
+  <div class="flex justify-end pt-4">
+    <%= form.submit class: "rounded-md bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 transition-all shadow-md active:scale-95 cursor-pointer" %>
+  </div>
 <% end %>
