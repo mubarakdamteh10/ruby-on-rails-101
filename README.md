@@ -1,4 +1,4 @@
-# HRMS
+# 🏢 HRMS
 
 A comprehensive Ruby on Rails 8.1 application for managing employees, tracking attendance, and processing payroll.
 
@@ -80,16 +80,16 @@ The current Minimum Viable Product (MVP) includes the following core modules:
     - Automated calculation of gross salary, OT payments, tax deductions, and net amount.
     - Idempotent payroll processing (prevents duplicate entries for the same month/year).
 
-## Additinal Features out of scope requirements
+## ✨ Additional Features (Out of Scope)
     - Access control for different user roles (e.g., admin, employee).
         - Avoid tax on special employee
     - Theme dark/light mode.
 
-## Agent
+## 🤖 Agent
     - Antigravity
     - Gemini
 
-## Agent cooperation and contribution
+## 🤝 Agent Cooperation and Contribution
     - project set up
 
     - database setup
@@ -103,7 +103,7 @@ The current Minimum Viable Product (MVP) includes the following core modules:
         - attendance tracking
         - payroll processing
 
-    - Additinal Features out of scope requirements
+    - ✨ Additional Features (Out of Scope)
         - Access control for different user roles (e.g., admin, employee).
         - payroll calculator for all employees metrix
         - Theme dark/light mode.
@@ -111,10 +111,10 @@ The current Minimum Viable Product (MVP) includes the following core modules:
     - unit testing
 
 
-## Agent instructions
+## 📜 Agent Instructions
     - Provides the best practices for ruby on rails development.
 
-## UX & Permissions
+## 🎨 UX & Permissions
 - **Landing Page**: Role-selection portal with visual identity cards for Admins and Employees.
 - **Adaptive UI**: Navigation menus and features dynamically adjust based on user role.
 - **Accessibility**: Native dark/light mode persistence and 100% mobile responsiveness.
