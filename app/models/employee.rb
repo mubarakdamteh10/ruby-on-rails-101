@@ -1,6 +1,6 @@
 class Employee < ApplicationRecord
   self.primary_key = "employee_id"
-  has_many :attendances, dependent: :destroy
+  has_many :attendances, primary_key: :code, foreign_key: :employee_code, dependent: :destroy
 
   validates :name, presence: true
   validates :code, presence: true
@@ -11,6 +11,10 @@ class Employee < ApplicationRecord
   validates :address, presence: true
   # validates :created_by, presence: true
   # validates :updated_by, presence: true
+  def to_param
+    code
+  end
+
   def as_json(options = {})
     super(options).merge(
       "created_at" => created_at&.utc&.strftime("%Y-%m-%dT%H:%M:%S%:z"),
