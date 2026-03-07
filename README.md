@@ -66,7 +66,7 @@ make sure you have PostgreSQL running
 
 The current Minimum Viable Product (MVP) includes the following core modules:
 
-- **Authentication**: Simple session-based sign-in/sign-out mechanism.
+- **Authentication**: Simple session-based sign-in/sign-out mechanism. switch user role
 - **Employee Management**:
     - Full CRUD (Create, Read, Update, Delete) for employee records.
     - Unique employee codes for easy identification.
@@ -84,6 +84,7 @@ The current Minimum Viable Product (MVP) includes the following core modules:
     - Access control for different user roles (e.g., admin, employee).
         - Avoid tax on special employee
     - Theme dark/light mode.
+    - payroll page
 
 ## 🤖 Agent
     - Antigravity
@@ -124,5 +125,5 @@ The current Minimum Viable Product (MVP) includes the following core modules:
 | **Employees** | Manage | No Access |
 | **Attendance** | View All | Own Only |
 | **Payroll** | Calculate | View Status |
-| **Estimator** | Access | Access |
+| **Salary Estimator** | Access | Access |
 | **Theme** | Toggle | Toggle |
