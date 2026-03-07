@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_07_130822) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_07_134518) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,18 +43,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_07_130822) do
     t.index ["code"], name: "index_employees_on_code", unique: true
   end
 
-  create_table "payrolls", force: :cascade do |t|
+  create_table "payrolls", primary_key: "payroll_id", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "base_salary", precision: 10, scale: 2
     t.datetime "created_at", null: false
-    t.string "employee_code"
+    t.string "employee_code", null: false
     t.decimal "gross_salary", precision: 10, scale: 2
-    t.integer "month"
+    t.integer "month", null: false
     t.decimal "net_amount", precision: 10, scale: 2
     t.decimal "ot_payment", precision: 10, scale: 2
     t.decimal "tax_amount", precision: 10, scale: 2
     t.decimal "tax_percentage", precision: 5, scale: 2
     t.decimal "total_ot_hours", precision: 10, scale: 2
     t.datetime "updated_at", null: false
-    t.integer "year"
+    t.integer "year", null: false
+    t.index ["employee_code", "month", "year"], name: "index_payrolls_on_employee_code_and_month_and_year", unique: true
+    t.index ["employee_code"], name: "index_payrolls_on_employee_code"
   end
 end
