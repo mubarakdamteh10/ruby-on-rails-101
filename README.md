@@ -85,6 +85,9 @@ The current Minimum Viable Product (MVP) includes the following core modules:
         - Avoid tax on special employee
     - Theme dark/light mode.
 
+## Agent
+    - Antigravity
+    - Gemini
 
 ## Agent cooperation and contribution
     - project set up
@@ -102,6 +105,24 @@ The current Minimum Viable Product (MVP) includes the following core modules:
 
     - Additinal Features out of scope requirements
         - Access control for different user roles (e.g., admin, employee).
+        - payroll calculator for all employees metrix
         - Theme dark/light mode.
 
     - unit testing
+
+
+## Agent instructions
+    - Provides the best practices for ruby on rails development.
+
+## UX & Permissions
+- **Landing Page**: Role-selection portal with visual identity cards for Admins and Employees.
+- **Adaptive UI**: Navigation menus and features dynamically adjust based on user role.
+- **Accessibility**: Native dark/light mode persistence and 100% mobile responsiveness.
+
+| Feature | Admin | Employee |
+|:---|:---:|:---:|
+| **Employees** | Manage | No Access |
+| **Attendance** | View All | Own Only |
+| **Payroll** | Calculate | View Status |
+| **Estimator** | Access | Access |
+| **Theme** | Toggle | Toggle |
