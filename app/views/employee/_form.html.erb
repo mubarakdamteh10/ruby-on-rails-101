@@ -33,6 +33,31 @@
       <%= form.text_field :phone, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
     </div>
 
+    <div class="space-y-2">
+      <%= form.label :code, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+      <%= form.text_field :code, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
+    </div>
+
+    <div class="space-y-2">
+      <%= form.label :department, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+      <%= form.text_field :department, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
+    </div>
+
+    <div class="space-y-2">
+      <%= form.label :position, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+      <%= form.text_field :position, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
+    </div>
+
+    <div class="space-y-2">
+      <%= form.label :salary, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+      <%= form.number_field :salary, step: :any, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
+    </div>
+
+    <div class="flex items-center space-x-3 py-2">
+      <%= form.check_box :is_tax, class: "h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700" %>
+      <%= form.label :is_tax, "Is Taxed?", class: "text-sm font-medium text-slate-700 dark:text-slate-300" %>
+    </div>
+
     <div class="space-y-2 md:col-span-2">
       <%= form.label :address, class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
       <%= form.text_area :address, rows: 3, class: "w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 transition-colors shadow-sm outline-none" %>
