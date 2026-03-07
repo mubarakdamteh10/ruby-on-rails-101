@@ -13,11 +13,22 @@ Ensure you have the following installed:
 - **PostgreSQL** (Active and running)
 - **Bundler** (`gem install bundler`)
 
+### 🔑 Database Environment Variables
+
+The application uses the following environment variables for database connection. You can set these in your shell or use a `.env` file:
+
+| Variable | Description | Default Value |
+| :--- | :--- | :--- |
+| `DB_HOST` | Database host address | `127.0.0.1` |
+| `DB_PORT` | Database port | `5432` |
+| `DB_USER` | Database username | `maibok` |
+| `DB_PASSWORD` | Database password | `password` |
+
 ### Installation
 
 1.  **Clone the repository**:
     ```bash
-    git clone <repository-url>
+    git clone git@github.com:mubarakdamteh10/ruby-on-rails-101.git
     cd ruby-on-rails-101
     ```
 
@@ -29,8 +40,8 @@ Ensure you have the following installed:
 3.  **Setup for MacOS (Recommended)**:
     Start the database and prepare the environment with these commands:
     ```bash
-    make db-start      # Start PostgreSQL via Docker
-    make prepare-db    # Create, migrate, and seed the database
+    make db-start
+    make prepare-db
     ```
 
 4.  **Start the development server**:
@@ -41,6 +52,7 @@ Ensure you have the following installed:
 
 ### Alternative (Manual) Setup
 If you are not using the Makefile/Docker:
+make sure you have PostgreSQL running
 1.  **Setup the database**:
     ```bash
     bin/rails db:setup
@@ -68,30 +80,27 @@ The current Minimum Viable Product (MVP) includes the following core modules:
     - Automated calculation of gross salary, OT payments, tax deductions, and net amount.
     - Idempotent payroll processing (prevents duplicate entries for the same month/year).
 
-## 🛠 Tech Stack
+## Additinal Features out of scope requirements
+    - Access control for different user roles (e.g., admin, employee).
+    - Theme dark/light mode.
 
-- **Framework**: [Ruby on Rails 8.1](https://rubyonrails.org/)
-- **Language**: [Ruby 3.4.8](https://www.ruby-lang.org/)
-- **Database**: [PostgreSQL](https://www.postgresql.org/)
-- **Assets**: [Importmaps](https://github.com/rails/importmap-rails) (No Node.js required for JS management)
-- **Deployment**: Ready for [Kamal](https://kamal-deploy.org/) and Docker.
 
-## 📖 Using the Application
+## Agent cooperation and contribution
+    - project set up
 
-### Initial Data
-The project comes with seeded data to help you explore the features immediately. Check `db/seeds.rb` for the list of initial employees.
+    - database setup
+        - schema
+        - migrations
+        - seed data
+        
+    - MVC implementation
+        - authentication
+        - employee management
+        - attendance tracking
+        - payroll processing
 
-### Accessing the App
-- **Sign In**: Navigate to the root URL (`/`) to access the sign-in options.
-- **Admin Dashboard**: Accessible via `/admin` (or defined routes).
-- **Employee Access**: Employees can check in/out using their specific code via the attendance routes.
+    - Additinal Features out of scope requirements
+        - Access control for different user roles (e.g., admin, employee).
+        - Theme dark/light mode.
 
-### Common Commands
-- **Run Tests**: `bin/rails test`
-- **Check Routes**: `bin/rails routes`
-- **Interactive Console**: `bin/rails console`
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    - unit testing
