@@ -1,8 +1,8 @@
-<div class="min-h-screen bg-slate-50 dark:bg-slate-900 p-6 transition-colors duration-200">
+<div class="min-h-screen p-6">
   <div class="mx-auto max-w-6xl">
     <div class="mb-6 flex items-center justify-between">
       <h1 class="text-2xl font-bold text-slate-900 dark:text-white">All Employees</h1>
-      <%= link_to "Create Employee", new_employee_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
+      <%= link_to "Create Employee", new_admin_employee_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
     </div>
 
     <% if notice.present? %>
@@ -41,9 +41,9 @@
               </td>
               <td class="px-4 py-3 text-sm">
                 <div class="flex items-center gap-2">
-                  <%= link_to "View", employee_path(employee), class: "rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" %>
-                  <%= link_to "Edit", edit_employee_path(employee), class: "rounded-md border border-blue-300 dark:border-blue-900 px-3 py-1.5 text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20" %>
-                  <%= button_to "Delete", employee_path(employee), method: :delete, class: "rounded-md border border-rose-300 dark:border-rose-900 px-3 py-1.5 text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20", form: { data: { turbo_confirm: "Delete this employee?" }, class: "inline-block" } %>
+                  <%= link_to "View", admin_employee_path(employee), class: "rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700" %>
+                  <%= link_to "Edit", edit_admin_employee_path(employee), class: "rounded-md border border-blue-300 dark:border-blue-900 px-3 py-1.5 text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20" %>
+                  <%= button_to "Delete", admin_employee_path(employee), method: :delete, class: "rounded-md border border-rose-300 dark:border-rose-900 px-3 py-1.5 text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20", form: { data: { turbo_confirm: "Delete this employee?" }, class: "inline-block" } %>
                 </div>
               </td>
             </tr>

@@ -10,14 +10,14 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-4">
-        <%= form_with url: payroll_index_path, method: :get, class: "flex items-center gap-2 bg-slate-50 dark:bg-slate-900/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-none opacity-60 cursor-not-allowed" do |f| %>
+        <%= form_with url: admin_payroll_index_path, method: :get, class: "flex items-center gap-2 bg-slate-50 dark:bg-slate-900/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-none opacity-60 cursor-not-allowed" do |f| %>
           <%= f.select :month, Date::MONTHNAMES.compact.each_with_index.map { |m, i| [m, i+1] }, { selected: @month }, { class: "bg-transparent border-none text-sm font-bold text-slate-400 dark:text-slate-600 focus:ring-0 cursor-not-allowed", disabled: true } %>
           <div class="w-px h-4 bg-slate-200 dark:bg-slate-800 mx-1"></div>
           <%= f.select :year, (Time.current.year-2..Time.current.year+1).to_a, { selected: @year }, { class: "bg-transparent border-none text-sm font-bold text-slate-400 dark:text-slate-600 focus:ring-0 cursor-not-allowed", disabled: true } %>
           <%= f.submit "Go", class: "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 px-3 py-1.5 rounded-lg text-xs font-black cursor-not-allowed", disabled: true %>
         <% end %>
 
-        <%= button_to calculate_payroll_index_path(month: @month, year: @year), method: :post, class: "group relative active:scale-95 transition-transform" do %>
+        <%= button_to calculate_admin_payroll_index_path(month: @month, year: @year), method: :post, class: "group relative active:scale-95 transition-transform" do %>
           <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl blur opacity-25 group-hover:opacity-100 transition duration-500"></div>
           <div class="relative flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>

@@ -1,4 +1,6 @@
 class PayrollController < ApplicationController
+  before_action :ensure_admin!
+
   def index
     @month = params[:month]&.to_i || Time.current.month
     @year = params[:year]&.to_i || Time.current.year
@@ -32,6 +34,12 @@ class PayrollController < ApplicationController
       )
     end
 
-    redirect_to payroll_index_path(month: month, year: year), notice: "Payroll calculated successfully for #{Date::MONTHNAMES[month]} #{year}."
+    redirect_to admin_payroll_index_path(month: month, year: year), notice: "Payroll calculated successfully for #{Date::MONTHNAMES[month]} #{year}."
+  end
+
+  private
+
+  def ensure_admin!
+    redirect_to sign_in_option_path, alert: "Access denied" unless admin?
   end
 end

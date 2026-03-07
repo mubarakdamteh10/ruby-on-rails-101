@@ -1,0 +1,42 @@
+<div class="min-h-[80vh] flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 text-center">
+    <div>
+      <div class="mx-auto h-12 w-12 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-blue-500/20 shadow-lg mb-4">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+      </div>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-2">
+        Welcome to HRMS
+      </h2>
+      <p class="text-slate-500 dark:text-slate-400">
+        Choose your login preference to continue
+      </p>
+    </div>
+
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- Admin Option -->
+      <%= button_to sign_in_path(role: "admin"), method: :post, class: "group relative w-full flex flex-col items-center justify-center p-6 border border-transparent rounded-2xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-xl shadow-blue-500/25 hover:scale-[1.02] active:scale-[0.98] sm:col-span-2" do %>
+        <div class="mb-3 p-3 bg-white/20 rounded-xl">
+          <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        </div>
+        <span class="text-lg font-bold">Sign in as Admin</span>
+        <span class="text-xs text-blue-100/70 mt-1 uppercase tracking-wider font-semibold">Administrator Access</span>
+      <% end %>
+
+      <!-- All Employees -->
+      <% @employees.each do |employee| %>
+        <%= button_to sign_in_path(employee_code: employee.code, employee_name: employee.name), method: :post, class: "group relative w-full flex flex-col items-center justify-center p-5 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-all shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98]" do %>
+          <div class="mb-3 text-center w-full flex justify-center">
+            <img class="w-12 h-12 rounded-full border-2 border-slate-100 dark:border-slate-600 object-cover shadow-sm group-hover:border-blue-500/30 transition-colors" src="https://ui-avatars.com/api/?name=<%= employee.name.gsub(' ', '+') %>&background=random&color=fff&size=64" alt="<%= employee.name %>">
+          </div>
+          <span class="text-sm font-bold truncate max-w-full block w-full text-center"><%= employee.name %></span>
+          <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-widest font-semibold block w-full text-center"><%= employee.position %></span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="mt-6 flex items-center justify-center space-x-2 text-sm text-slate-400">
+      <span>Need help?</span>
+      <a href="#" class="font-medium text-blue-600 hover:text-blue-500 hover:underline transition-all">Contact support</a>
+    </div>
+  </div>
+</div>
