@@ -13,3 +13,8 @@ db-restart:
 db-logs:
 	docker compose logs -f
 
+
+prepare-db:
+	bin/rails db:create
+	bin/rails db:migrate
+	bin/rails db:seed
