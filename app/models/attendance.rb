@@ -30,10 +30,9 @@ class Attendance < ApplicationRecord
     # Automatically set duration string
     self.duration = "#{hours}h #{minutes}m"
 
-    # Set overtime logic: if duration > 8 hours, overtime is 1 hour
-    # Note: 8 hours = 28,800 seconds
-    if diff_seconds > 28800
-      self.over_time_hour = 1
+    # Set overtime logic: any hour beyond 8 hours is considered overtime
+    if hours > 8
+      self.over_time_hour = hours - 8
     else
       self.over_time_hour = 0
     end

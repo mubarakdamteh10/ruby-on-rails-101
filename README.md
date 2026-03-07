@@ -82,6 +82,7 @@ The current Minimum Viable Product (MVP) includes the following core modules:
 
 ## Additinal Features out of scope requirements
     - Access control for different user roles (e.g., admin, employee).
+        - Avoid tax on special employee
     - Theme dark/light mode.
 
 
