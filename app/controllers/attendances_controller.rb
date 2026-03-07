@@ -26,12 +26,10 @@ class AttendancesController < ApplicationController
 
     if @last_attendance.present? && @last_attendance.check_out.blank?
       check_out_time = Time.current
-      duration_string = Attendance.calculate_duration(@last_attendance.check_in, check_out_time)
 
       @last_attendance.update!(
         check_out: check_out_time,
-        timestamp: check_out_time,
-        duration: duration_string
+        timestamp: check_out_time
       )
       notice = "Checked out successfully."
     else

@@ -59,4 +59,72 @@ class AttendanceTest < ActiveSupport::TestCase
     # Assert
     assert_nil result
   end
+
+  test "automatically calculates metrics on save" do
+    # Arrange
+    employee = mock_employee
+    check_in = Time.zone.parse("2026-03-07 09:00:00")
+    check_out = check_in + 2.hours
+
+    # Act
+    attendance = Attendance.create!(
+      employee: employee,
+      check_in: check_in,
+      check_out: check_out
+    )
+
+    # Assert
+    assert_equal "2h 0m", attendance.duration
+    assert_equal 0, attendance.over_time_hour
+  end
+
+  test "sets overtime to 1 when duration > 8 hours" do
+    # Arrange
+    employee = mock_employee
+    check_in = Time.zone.parse("2026-03-07 08:00:00")
+    check_out = check_in + 8.hours + 1.minute # 8h 1m
+
+    # Act
+    attendance = Attendance.create!(
+      employee: employee,
+      check_in: check_in,
+      check_out: check_out
+    )
+
+    # Assert
+    assert_equal "8h 1m", attendance.duration
+    assert_equal 1, attendance.over_time_hour
+  end
+
+  test "sets overtime to 0 when duration is exactly 8 hours" do
+    # Arrange
+    employee = mock_employee
+    check_in = Time.zone.parse("2026-03-07 08:00:00")
+    check_out = check_in + 8.hours
+
+    # Act
+    attendance = Attendance.create!(
+      employee: employee,
+      check_in: check_in,
+      check_out: check_out
+    )
+
+    # Assert
+    assert_equal "8h 0m", attendance.duration
+    assert_equal 0, attendance.over_time_hour
+  end
+
+  private
+
+  def mock_employee
+    Employee.create!(
+      name: "Test Employee",
+      code: "EMP#{SecureRandom.hex(4)}",
+      department: "Engineering",
+      position: "Developer",
+      email: "test@example.com",
+      phone: "1234567890",
+      address: "123 Test St"
+    )
+  end
 end
