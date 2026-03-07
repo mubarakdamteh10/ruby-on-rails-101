@@ -3,7 +3,7 @@ class Employee < ApplicationRecord
   has_many :attendances, primary_key: :code, foreign_key: :employee_code, dependent: :destroy
 
   validates :name, presence: true
-  validates :code, presence: true
+  validates :code, presence: true, uniqueness: true
   validates :department, presence: true
   validates :position, presence: true
   validates :email, presence: true

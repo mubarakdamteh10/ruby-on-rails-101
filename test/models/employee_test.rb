@@ -15,6 +15,77 @@ class EmployeeTest < ActiveSupport::TestCase
     )
   end
 
+  # --- CRUD & Validation Tests ---
+
+  test "should create a valid employee" do
+    assert @employee.valid?
+    assert_difference "Employee.count", 1 do
+      @employee.save
+    end
+  end
+
+  test "should update an employee's salary and position" do
+    @employee.save!
+    @employee.update(salary: 55000, position: "Senior Tester")
+
+    @employee.reload
+    assert_equal 55000, @employee.salary
+    assert_equal "Senior Tester", @employee.position
+  end
+
+  test "should not be valid without a name" do
+    @employee.name = nil
+    assert_not @employee.valid?
+    assert_includes @employee.errors[:name], "can't be blank"
+  end
+
+  test "should not be valid without an employee code" do
+    @employee.code = nil
+    assert_not @employee.valid?
+    assert_includes @employee.errors[:code], "can't be blank"
+  end
+
+  test "should not be valid without a department" do
+    @employee.department = nil
+    assert_not @employee.valid?
+  end
+
+  test "should not allow duplicate employee codes" do
+    @employee.save!
+    duplicate = @employee.dup
+    assert_not duplicate.valid?
+    assert_includes duplicate.errors[:code], "has already been taken"
+  end
+
+  # --- Robust Payroll Boundary Tests ---
+
+  test "tax boundary: exactly 30000 should be 0%" do
+    tax_info = @employee.calculate_tax_level(30000)
+    assert_equal 0, tax_info[:percentage]
+  end
+
+  test "tax boundary: 30001 should be 5%" do
+    tax_info = @employee.calculate_tax_level(30001)
+    assert_equal 5, tax_info[:percentage]
+  end
+
+  test "tax boundary: exactly 50000 should be 5%" do
+    tax_info = @employee.calculate_tax_level(50000)
+    assert_equal 5, tax_info[:percentage]
+  end
+
+  test "tax boundary: 50001 should be 10%" do
+    tax_info = @employee.calculate_tax_level(50001)
+    assert_equal 10, tax_info[:percentage]
+  end
+
+  test "payroll handles zero salary correctly" do
+    @employee.salary = 0
+    data = @employee.current_payroll_data
+    assert_equal 0, data[:net_amount]
+    assert_equal 0, data[:ot_payment]
+  end
+
   # --- OT Calculation Tests ---
 
   test "calculate_ot_payment returns correct amount based on 240 hour basis" do
