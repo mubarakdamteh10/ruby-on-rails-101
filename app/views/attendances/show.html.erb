@@ -44,17 +44,22 @@
           <% end %>
         </p>
 
-        <%= button_to employee_attendance_path(@employee), method: :post, class: "group relative active:scale-95 transition-transform duration-100" do %>
-          <div class="absolute -inset-2 bg-gradient-to-r <%= @is_checked_in ? 'from-rose-500 to-orange-500' : 'from-blue-600 to-indigo-600' %> rounded-3xl blur-lg opacity-40 group-hover:opacity-100 transition duration-500"></div>
-          <div class="relative px-16 py-5 <%= @is_checked_in ? 'bg-rose-600 hover:bg-rose-700' : 'bg-blue-600 hover:bg-blue-700' %> rounded-2xl text-white font-black text-xl shadow-2xl flex items-center gap-4 transition-all border border-white/10">
-            <% if @is_checked_in %>
+        <% if @is_checked_in %>
+          <%= button_to check_out_attendance_path(@employee), method: :patch, class: "group relative active:scale-95 transition-transform duration-100" do %>
+            <div class="absolute -inset-2 bg-gradient-to-r from-rose-500 to-orange-500 rounded-3xl blur-lg opacity-40 group-hover:opacity-100 transition duration-500"></div>
+            <div class="relative px-16 py-5 bg-rose-600 hover:bg-rose-700 rounded-2xl text-white font-black text-xl shadow-2xl flex items-center gap-4 transition-all border border-white/10">
               <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-6 0v-1m6-10V7a3 3 0 00-6 0v1"></path></svg>
               <span>Check Out</span>
-            <% else %>
+            </div>
+          <% end %>
+        <% else %>
+          <%= button_to check_in_attendance_path(@employee), method: :post, class: "group relative active:scale-95 transition-transform duration-100" do %>
+            <div class="absolute -inset-2 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur-lg opacity-40 group-hover:opacity-100 transition duration-500"></div>
+            <div class="relative px-16 py-5 bg-blue-600 hover:bg-blue-700 rounded-2xl text-white font-black text-xl shadow-2xl flex items-center gap-4 transition-all border border-white/10">
               <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-6 0v-1m6-10V7a3 3 0 00-6 0v1"></path></svg>
               <span>Check In</span>
-            <% end %>
-          </div>
+            </div>
+          <% end %>
         <% end %>
       </div>
     </div>
@@ -109,12 +114,7 @@
                     <%= attendance.check_out&.strftime("%H:%M") || "-" %>
                   </td>
                   <td class="px-8 py-5 text-sm font-medium text-slate-500 dark:text-slate-400">
-                    <% if attendance.check_in.present? && attendance.check_out.present? %>
-                      <% diff = (attendance.check_out - attendance.check_in).to_i %>
-                      <%= "#{diff / 3600}h #{(diff % 3600) / 60}m" %>
-                    <% else %>
-                      -
-                    <% end %>
+                    <%= attendance.formatted_duration %>
                   </td>
                 </tr>
               <% end %>

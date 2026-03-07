@@ -14,7 +14,8 @@ Rails.application.routes.draw do
 
   resources :attendances, only: [ :index ]
   get "attendances/:code", to: "attendances#show", as: :employee_attendance
-  post "attendances/:code", to: "attendances#create"
+  post "attendances/:code/check_in", to: "attendances#check_in", as: :check_in_attendance
+  patch "attendances/:code/check_out", to: "attendances#check_out", as: :check_out_attendance
 
   root "employee#show_all"
 end
