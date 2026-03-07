@@ -1,3 +1,4 @@
+
 db-start:
 	docker compose up -d
 
@@ -21,6 +22,9 @@ db-prepare:
 
 
 # testing
+
+test:
+	bin/rails test
 
 test-system:
 	DRIVER=chrome bin/rails test:system

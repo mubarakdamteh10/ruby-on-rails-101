@@ -59,8 +59,24 @@ make sure you have PostgreSQL running
     ```
 2.  **Start the Rails server**:
     ```bash
+    ```bash
     bin/rails server
     ```
+
+## 🧪 Testing
+
+The project includes unit, functional, and integration (system) tests.
+
+### Running Tests
+- **All Tests**: `make test`
+- **System Tests (Visible)**: `make test-system`
+- **System Tests (Headless)**: `bin/rails test:system`
+
+### Debugging System Tests
+You can run system tests in a "slow-motion" mode to see the browser interactions clearly:
+```bash
+DRIVER=chrome SLOW=true bin/rails test:system
+```
 
 ## 🚀 MVP Features
 
