@@ -24,6 +24,10 @@ Rails.application.routes.draw do
     root to: "/employee#show_all"
   end
 
+  scope :salary do
+  get "salary_calculator", to: "salary#calculator", as: :salary_calculator
+  end
+
   # Employee restricted routes (non-namespaced)
   scope :attendances do
     get ":code", to: "attendances#show", as: :employee_attendance

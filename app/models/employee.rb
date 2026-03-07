@@ -32,7 +32,7 @@ class Employee < ApplicationRecord
     (ot_hours * hourly_rate).round(2)
   end
 
-  def calculate_tax_level(gross_salary)
+  def calculate_tax_level(base_amount, gross_amount)
     return { percentage: 0, amount: 0 } unless is_tax
 
     # Logic:
@@ -40,13 +40,13 @@ class Employee < ApplicationRecord
     # - if base salary between 30001 - 50000 --- tax 5 %
     # - if base salary equal or more than 50001 --- tax 10 %
 
-    percentage = case gross_salary
+    percentage = case base_amount
     when 0..30000 then 0
     when 30001..50000 then 5
     else 10
     end
 
-    tax_amount = (gross_salary * (percentage / 100.0)).round(2)
+    tax_amount = (gross_amount * (percentage / 100.0)).round(2)
     { percentage: percentage, amount: tax_amount }
   end
 
@@ -67,7 +67,7 @@ class Employee < ApplicationRecord
     worked_days = total_worked_days(month, year)
     ot_pay = calculate_ot_payment(ot_hours)
     gross = (salary || 0) + ot_pay
-    tax_info = calculate_tax_level(gross)
+    tax_info = calculate_tax_level(salary || 0, gross)
     net = gross - tax_info[:amount]
 
     {

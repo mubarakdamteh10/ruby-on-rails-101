@@ -59,23 +59,56 @@ class EmployeeTest < ActiveSupport::TestCase
 
   # --- Robust Payroll Boundary Tests ---
 
-  test "tax boundary: exactly 30000 should be 0%" do
-    tax_info = @employee.calculate_tax_level(30000)
+  test "tax boundary: exactly 30000 base should be 0% even with OT" do
+    tax_info = @employee.calculate_tax_level(30000, 35000)
+
+    # Assert
+    # Base: 30000
+    # OT: 5000
+    # Gross: 35000
+    # Tax Tier: 30000 base -> 0%
+    # Tax: 35000 * 0% = 0
+    # Net: 35000 - 0 = 35000
     assert_equal 0, tax_info[:percentage]
+    assert_equal 0, tax_info[:amount]
   end
 
-  test "tax boundary: 30001 should be 5%" do
-    tax_info = @employee.calculate_tax_level(30001)
+  test "tax boundary: 30001 base should be 5%" do
+    tax_info = @employee.calculate_tax_level(30001, 30001)
+
+    # Assert
+    # Base: 30001
+    # OT: 0
+    # Gross: 30001
+    # Tax Tier: 30001 base -> 5%
+    # Tax: 30001 * 5% = 1500.05
+    # Net: 30001 - 1500.05 = 28500.95
     assert_equal 5, tax_info[:percentage]
   end
 
-  test "tax boundary: exactly 50000 should be 5%" do
-    tax_info = @employee.calculate_tax_level(50000)
+  test "tax boundary: exactly 50000 base should be 5%" do
+    tax_info = @employee.calculate_tax_level(50000, 50000)
+
+    # Assert
+    # Base: 50000
+    # OT: 0
+    # Gross: 50000
+    # Tax Tier: 50000 base -> 5%
+    # Tax: 50000 * 5% = 2500
+    # Net: 50000 - 2500 = 47500
     assert_equal 5, tax_info[:percentage]
   end
 
-  test "tax boundary: 50001 should be 10%" do
-    tax_info = @employee.calculate_tax_level(50001)
+  test "tax boundary: 50001 base should be 10%" do
+    tax_info = @employee.calculate_tax_level(50001, 50001)
+
+    # Assert
+    # Base: 50001
+    # OT: 0
+    # Gross: 50001
+    # Tax Tier: 50001 base -> 10%
+    # Tax: 50001 * 10% = 5000.1
+    # Net: 50001 - 5000.1 = 45000.9
     assert_equal 10, tax_info[:percentage]
   end
 
@@ -101,29 +134,59 @@ class EmployeeTest < ActiveSupport::TestCase
 
   # --- Tax Level Tests ---
 
-  test "tax level is 0% for gross salary <= 30000" do
-    tax_info = @employee.calculate_tax_level(30000)
+  test "tax level is 0% for base salary <= 30000" do
+    tax_info = @employee.calculate_tax_level(30000, 35000)
+
+    # Assert
+    # Base: 30000
+    # OT: 5000
+    # Gross: 35000
+    # Tax Tier: 30000 base -> 0%
+    # Tax: 35000 * 0% = 0
+    # Net: 35000 - 0 = 35000
     assert_equal 0, tax_info[:percentage]
     assert_equal 0, tax_info[:amount]
   end
 
-  test "tax level is 5% for gross salary between 30001 and 50000" do
-    # 40000 * 5% = 2000
-    tax_info = @employee.calculate_tax_level(40000)
+  test "tax level is 5% for base salary between 30001 and 50000" do
+    tax_info = @employee.calculate_tax_level(40000, 45000)
+
+    # Assert
+    # Base: 40000
+    # OT: 5000
+    # Gross: 45000
+    # Tax Tier: 40000 base -> 5%
+    # Tax: 45000 * 5% = 2250
+    # Net: 45000 - 2250 = 42750
     assert_equal 5, tax_info[:percentage]
-    assert_equal 2000.0, tax_info[:amount]
+    assert_equal 2250.0, tax_info[:amount]
   end
 
-  test "tax level is 10% for gross salary >= 50001" do
-    # 60000 * 10% = 6000
-    tax_info = @employee.calculate_tax_level(60000)
+  test "tax level is 10% for base salary >= 50001" do
+    tax_info = @employee.calculate_tax_level(60000, 70000)
+
+    # Assert
+    # Base: 60000
+    # OT: 10000
+    # Gross: 70000
+    # Tax Tier: 60000 base -> 10%
+    # Tax: 70000 * 10% = 7000
+    # Net: 70000 - 7000 = 63000
     assert_equal 10, tax_info[:percentage]
-    assert_equal 6000.0, tax_info[:amount]
+    assert_equal 7000.0, tax_info[:amount]
   end
 
   test "tax level is always 0% when is_tax is false" do
     @employee.is_tax = false
-    tax_info = @employee.calculate_tax_level(100000)
+    tax_info = @employee.calculate_tax_level(100000, 110000)
+
+    # Assert
+    # Base: 100000
+    # OT: 10000
+    # Gross: 110000
+    # Tax Tier: is_tax is false -> 0%
+    # Tax: 110000 * 0% = 0
+    # Net: 110000 - 0 = 110000
     assert_equal 0, tax_info[:percentage]
     assert_equal 0, tax_info[:amount]
   end
@@ -154,6 +217,7 @@ class EmployeeTest < ActiveSupport::TestCase
     # Base: 40000
     # OT: 10 * (40000 / 240.0) = 1666.67
     # Gross: 41666.67
+    # Tax Tier: 40000 base -> 5%
     # Tax: 41666.67 * 5% = 2083.33
     # Net: 41666.67 - 2083.33 = 39583.34
 

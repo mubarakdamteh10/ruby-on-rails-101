@@ -60,8 +60,10 @@
                 <%= link_to "Employees", admin_root_path, class: (current_page?(admin_root_path) || controller_name == 'employee' ? active_link_class : inactive_link_class) %>
                 <%= link_to "Attendances", admin_attendances_path, class: (controller_name == 'attendances' ? active_link_class : inactive_link_class) %>
                 <%= link_to "Payroll", admin_payroll_index_path, class: (controller_name == 'payroll' ? active_link_class : inactive_link_class) %>
+                <%= link_to "Salary Estimator", salary_calculator_path, class: (current_page?(salary_calculator_path) ? active_link_class : inactive_link_class) %>
               <% elsif employee? %>
-                <%= link_to "Attendance", employee_attendance_path(session[:employee_code]), class: active_link_class %>
+                <%= link_to "Attendance", employee_attendance_path(session[:employee_code]), class: (controller_name == 'attendances' ? active_link_class : inactive_link_class) %>
+                <%= link_to "Salary Estimator", salary_calculator_path, class: (current_page?(salary_calculator_path) ? active_link_class : inactive_link_class) %>
               <% end %>
             </div>
           </div>
@@ -130,8 +132,10 @@
           <% if admin? %>
             <%= link_to "Employees", admin_root_path, class: "bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-700 dark:text-blue-400 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
             <%= link_to "Attendances", admin_attendances_path, class: "border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium transition-all" %>
+            <%= link_to "Salary Estimator", salary_calculator_path, class: "border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium transition-all" %>
           <% elsif employee? %>
             <%= link_to "Attendance", employee_attendance_path(session[:employee_code]), class: "bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-700 dark:text-blue-400 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
+            <%= link_to "Salary Estimator", salary_calculator_path, class: "border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium transition-all" %>
           <% end %>
         </div>
         <div class="pt-4 pb-3 border-t border-slate-200 dark:border-slate-700">
