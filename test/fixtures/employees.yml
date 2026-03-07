@@ -1,0 +1,21 @@
+alice:
+  code: "EMP-001"
+  name: "Alice Johnson"
+  department: "Engineering"
+  position: "Backend Developer"
+  email: "alice.johnson@test.com"
+  phone: "+1-555-0101"
+  address: "123 Main St, New York, NY"
+  salary: 5000.00
+  is_tax: true
+
+brian:
+  code: "EMP-002"
+  name: "Brian Lee"
+  department: "Product"
+  position: "Product Manager"
+  email: "brian.lee@test.com"
+  phone: "+1-555-0102"
+  address: "456 Pine Ave, San Francisco, CA"
+  salary: 30000.00
+  is_tax: true

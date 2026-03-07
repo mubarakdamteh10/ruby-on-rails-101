@@ -1,0 +1,13 @@
+one:
+  employee_code: "EMP-001"
+  check_in: <%= 1.day.ago.change(hour: 9, min: 0).to_fs(:db) %>
+  check_out: <%= 1.day.ago.change(hour: 18, min: 0).to_fs(:db) %>
+  over_time_hour: 1
+  timestamp: <%= 1.day.ago.change(hour: 18, min: 0).to_fs(:db) %>
+
+two:
+  employee_code: "EMP-002"
+  check_in: <%= 2.days.ago.change(hour: 8, min: 30).to_fs(:db) %>
+  check_out: <%= 2.days.ago.change(hour: 17, min: 30).to_fs(:db) %>
+  over_time_hour: 0
+  timestamp: <%= 2.days.ago.change(hour: 17, min: 30).to_fs(:db) %>
