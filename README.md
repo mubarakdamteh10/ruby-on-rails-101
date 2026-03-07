@@ -41,7 +41,7 @@ The application uses the following environment variables for database connection
     Start the database and prepare the environment with these commands:
     ```bash
     make db-start
-    make prepare-db
+    make db-prepare
     ```
 
 4.  **Start the development server**:

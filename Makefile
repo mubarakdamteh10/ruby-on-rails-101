@@ -14,7 +14,13 @@ db-logs:
 	docker compose logs -f
 
 
-prepare-db:
+db-prepare:
 	bin/rails db:create
 	bin/rails db:migrate
 	bin/rails db:seed
+
+
+# testing
+
+test-system:
+	DRIVER=chrome bin/rails test:system
