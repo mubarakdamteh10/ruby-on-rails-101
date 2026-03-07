@@ -50,11 +50,21 @@ class Employee < ApplicationRecord
     { percentage: percentage, amount: tax_amount }
   end
 
-  def current_payroll_data
-    month = Time.current.month
-    year = Time.current.year
+  def total_worked_days(month = Time.current.month, year = Time.current.year)
+    start_date = Date.new(year, month, 1)
+    end_date = start_date.end_of_month
 
+    # Count unique days where check_in is within the month AND check_out is not nil
+    attendances.where(check_in: start_date.beginning_of_day..end_date.end_of_day)
+               .where.not(check_out: nil)
+               .pluck("DATE(check_in)")
+               .uniq
+               .count
+  end
+
+  def current_payroll_data(month = Time.current.month, year = Time.current.year)
     ot_hours = total_ot_hours(month, year)
+    worked_days = total_worked_days(month, year)
     ot_pay = calculate_ot_payment(ot_hours)
     gross = (salary || 0) + ot_pay
     tax_info = calculate_tax_level(gross)
@@ -63,6 +73,7 @@ class Employee < ApplicationRecord
     {
       base_salary: salary || 0,
       total_ot_hours: ot_hours,
+      total_worked_days: worked_days,
       ot_payment: ot_pay,
       gross_composition: gross,
       tax_percentage: tax_info[:percentage],

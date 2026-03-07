@@ -13,13 +13,20 @@ class PayrollControllerTest < ActionDispatch::IntegrationTest
       salary: 60000,
       is_tax: true
     )
+    @attendance = Attendance.create!(
+      employee_code: @employee.code,
+      check_in: Time.current.beginning_of_day + 8.hours,
+      check_out: Time.current.beginning_of_day + 17.hours
+    )
+    # Mock admin session
+    post sign_in_path, params: { role: "admin" }
   end
 
   test "should get index" do
     # Arrange (Already handled in setup)
 
     # Act
-    get payroll_index_url
+    get admin_payroll_index_url
 
     # Assert
     assert_response :success
@@ -32,16 +39,17 @@ class PayrollControllerTest < ActionDispatch::IntegrationTest
 
     # Act
     assert_difference("Payroll.count", 1) do
-      post calculate_payroll_index_url, params: { month: month, year: year }
+      post calculate_admin_payroll_index_url, params: { month: month, year: year }
     end
 
     # Assert
-    assert_redirected_to payroll_index_url(month: month, year: year)
+    assert_redirected_to admin_payroll_index_url(month: month, year: year)
     assert_equal "Payroll calculated successfully for #{Date::MONTHNAMES[month]} #{year}.", flash[:notice]
 
     payroll = Payroll.find_by(employee_code: @employee.code, month: month, year: year)
     assert_not_nil payroll
     assert_equal 60000.0, payroll.base_salary
+    assert_equal 1, payroll.total_worked_days
   end
 
   test "should update existing payroll on recalculation" do
@@ -64,7 +72,7 @@ class PayrollControllerTest < ActionDispatch::IntegrationTest
 
     # Act
     assert_no_difference("Payroll.count") do
-      post calculate_payroll_index_url, params: { month: month, year: year }
+      post calculate_admin_payroll_index_url, params: { month: month, year: year }
     end
 
     # Assert

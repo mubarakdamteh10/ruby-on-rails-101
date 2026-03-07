@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_07_134518) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_07_193756) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,6 +54,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_07_134518) do
     t.decimal "tax_amount", precision: 10, scale: 2
     t.decimal "tax_percentage", precision: 5, scale: 2
     t.decimal "total_ot_hours", precision: 10, scale: 2
+    t.integer "total_worked_days"
     t.datetime "updated_at", null: false
     t.integer "year", null: false
     t.index ["employee_code", "month", "year"], name: "index_payrolls_on_employee_code_and_month_and_year", unique: true

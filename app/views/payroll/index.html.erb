@@ -35,6 +35,7 @@
             <tr class="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700">
               <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Employee</th>
               <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Base Salary</th>
+              <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">Worked Days</th>
               <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">OT Pay</th>
               <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Gross Income</th>
               <th class="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">Tax %</th>
@@ -63,6 +64,9 @@
                 </td>
 
                 <% if payroll %>
+                  <td class="px-6 py-5 text-center font-bold text-slate-900 dark:text-white">
+                    <%= payroll.total_worked_days %>
+                  </td>
                   <td class="px-6 py-5 text-right text-amber-600 dark:text-amber-400 font-bold">
                     + <%= number_to_currency(payroll.ot_payment, unit: "฿", format: "%n %u") %>
                     <div class="text-[10px] opacity-70">(<%= payroll.total_ot_hours.to_i %>h OT)</div>
@@ -71,8 +75,8 @@
                     <%= number_to_currency(payroll.gross_salary, unit: "฿", format: "%n %u") %>
                   </td>
                   <td class="px-6 py-5 text-center">
-                    <span class="px-2 py-1 rounded text-xs font-black <%= payroll.tax_percentage > 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' %>">
-                      <%= payroll.tax_percentage %>%
+                    <span class="px-2 py-1 rounded text-xs font-black <%= payroll.tax_percentage.to_f > 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' %>">
+                      <%= payroll.tax_percentage.to_f %>%
                     </span>
                   </td>
                   <td class="px-6 py-5 text-right text-rose-600 dark:text-rose-400 font-bold">
@@ -84,7 +88,7 @@
                     </div>
                   </td>
                 <% else %>
-                  <td colspan="5" class="px-6 py-5 text-center text-slate-400 italic text-sm">
+                  <td colspan="6" class="px-6 py-5 text-center text-slate-400 italic text-sm">
                     Pending calculation...
                   </td>
                 <% end %>
