@@ -22,7 +22,7 @@ class PayrollControllerTest < ActionDispatch::IntegrationTest
     post sign_in_path, params: { role: "admin" }
   end
 
-  test "should get index" do
+  test "admin should get index" do
     # Arrange (Already handled in setup)
 
     # Act
@@ -32,13 +32,13 @@ class PayrollControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should calculate payroll" do
+  test "admin should calculate payroll" do
     # Arrange
     month = Time.current.month
     year = Time.current.year
 
     # Act
-    assert_difference("Payroll.count", 1) do
+    assert_difference("Payroll.where(employee_code: @employee.code).count", 1) do
       post calculate_admin_payroll_index_url, params: { month: month, year: year }
     end
 
@@ -52,7 +52,7 @@ class PayrollControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, payroll.total_worked_days
   end
 
-  test "should update existing payroll on recalculation" do
+  test "admin should update existing payroll on recalculation" do
     # Arrange
     month = Time.current.month
     year = Time.current.year
@@ -71,13 +71,40 @@ class PayrollControllerTest < ActionDispatch::IntegrationTest
     )
 
     # Act
-    assert_no_difference("Payroll.count") do
+    assert_no_difference("Payroll.where(employee_code: @employee.code).count") do
       post calculate_admin_payroll_index_url, params: { month: month, year: year }
     end
 
     # Assert
     payroll = Payroll.find_by(employee_code: @employee.code, month: month, year: year)
+
     # It should be updated to real salary 60000
     assert_equal 60000.0, payroll.base_salary
+  end
+
+  test "employee should be denied access to admin payroll index" do
+    # Arrange
+    delete sign_out_path # Use delete as defined in routes.rb
+    post sign_in_path, params: { employee_code: @employee.code, employee_name: @employee.name }
+
+    # Act
+    get admin_payroll_index_url
+
+    # Assert
+    assert_redirected_to sign_in_option_path
+    assert_equal "Access denied", flash[:alert]
+  end
+
+  test "employee should be denied access to calculate payroll" do
+    # Arrange
+    delete sign_out_path
+    post sign_in_path, params: { employee_code: @employee.code, employee_name: @employee.name }
+
+    # Act
+    post calculate_admin_payroll_index_url
+
+    # Assert
+    assert_redirected_to sign_in_option_path
+    assert_equal "Access denied", flash[:alert]
   end
 end

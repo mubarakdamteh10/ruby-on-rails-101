@@ -9,22 +9,12 @@ class AttendancesController < ApplicationController
   def show
     @employee = Employee.find_by!(code: params[:code])
 
-    # 1. Look for any open record (missing a check_out) - Priority for "Check Out" button
-    @open_attendance = @employee.attendances.where(check_out: nil).order(check_in: :desc).first
+    @is_checked_in = @employee.checked_in?
+    @is_completed_today = @employee.completed_attendance_today?
+    @can_check_in = @employee.can_check_in?
 
-    # 2. Look for the record that STARTED today
-    @today_record = @employee.attendances.where(check_in: Date.current.all_day).first
-
-    # 3. Logic Flags
-    @is_checked_in = @open_attendance.present?
-
-    # Completed Today: If a record started today AND it is already closed
-    @is_completed_today = @today_record.present? && @today_record.check_out.present?
-
-    # Can Check In: Only if no record is currently open AND no record started today
-    @can_check_in = !@is_checked_in && @today_record.nil?
-
-    # For display consistency
+    @open_attendance = @employee.open_attendance
+    @today_record = @employee.today_record
     @today_attendance = @open_attendance || @today_record
     @last_attendance = @open_attendance || @employee.attendances.order(check_in: :desc).first
 
@@ -34,45 +24,32 @@ class AttendancesController < ApplicationController
 
   def check_in
     @employee = Employee.find_by!(code: params[:code])
+    redirect_path = admin? ? admin_employee_attendance_path(@employee) : employee_attendance_path(@employee)
 
-    # Guard: Cannot check in if already checked in (open record exists)
-    if @employee.attendances.where(check_out: nil).exists?
-      notice = "You're already checked in."
-      redirect_path = admin? ? admin_employee_attendance_path(@employee) : employee_attendance_path(@employee)
-      return redirect_to redirect_path, alert: notice
+    # Guard: Cannot check in if already checked in
+    if @employee.checked_in?
+      return redirect_to redirect_path, alert: "You're already checked in."
     end
 
     # Guard: Cannot check in if a record already started today
-    if @employee.attendances.where(check_in: Date.current.all_day).exists?
-      notice = "You've already completed attendance for today."
-      redirect_path = admin? ? admin_employee_attendance_path(@employee) : employee_attendance_path(@employee)
-      return redirect_to redirect_path, alert: notice
+    if @employee.completed_attendance_today? || @employee.today_record.present?
+      return redirect_to redirect_path, alert: "You've already completed attendance for today."
     end
 
-    @employee.attendances.create!(check_in: Time.current, timestamp: Time.current)
-
-    redirect_path = admin? ? admin_employee_attendance_path(@employee) : employee_attendance_path(@employee)
+    @employee.process_check_in!
     redirect_to redirect_path, notice: "Checked in successfully."
   end
 
   def check_out
     @employee = Employee.find_by!(code: params[:code])
-    # Close the latest open record, regardless of day
-    @last_attendance = @employee.attendances.where(check_out: nil).order(check_in: :desc).first
+    redirect_path = admin? ? admin_employee_attendance_path(@employee) : employee_attendance_path(@employee)
 
-    if @last_attendance.present?
-      check_out_time = Time.current
-
-      @last_attendance.update!(
-        check_out: check_out_time,
-        timestamp: check_out_time
-      )
+    if @employee.process_check_out!
       notice = "Checked out successfully."
     else
       notice = "No active check-in found."
     end
 
-    redirect_path = admin? ? admin_employee_attendance_path(@employee) : employee_attendance_path(@employee)
     redirect_to redirect_path, notice: notice
   end
 

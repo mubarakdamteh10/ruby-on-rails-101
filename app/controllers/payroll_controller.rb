@@ -18,27 +18,7 @@ class PayrollController < ApplicationController
     month = params[:month]&.to_i || Time.current.month
     year = params[:year]&.to_i || Time.current.year
 
-    Employee.find_each do |employee|
-      data = employee.current_payroll_data(month, year)
-
-      # Update or create payroll record for this month
-      payroll = Payroll.find_or_initialize_by(
-        employee_code: employee.code,
-        month: month,
-        year: year
-      )
-
-      payroll.base_salary = data[:base_salary]
-      payroll.total_ot_hours = data[:total_ot_hours]
-      payroll.total_worked_days = data[:total_worked_days].to_i
-      payroll.ot_payment = data[:ot_payment]
-      payroll.gross_salary = data[:gross_composition]
-      payroll.tax_percentage = data[:tax_percentage]
-      payroll.tax_amount = data[:tax_amount]
-      payroll.net_amount = data[:net_amount]
-
-      payroll.save
-    end
+    Payroll.calculate_for_month!(month, year)
 
     redirect_to admin_payroll_index_path(month: month, year: year), notice: "Payroll calculated successfully for #{Date::MONTHNAMES[month]} #{year}."
   end

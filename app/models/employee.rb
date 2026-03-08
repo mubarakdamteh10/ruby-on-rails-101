@@ -84,6 +84,46 @@ class Employee < ApplicationRecord
     }
   end
 
+  # --- Attendance State Logic ---
+
+  def open_attendance
+    attendances.where(check_out: nil).order(check_in: :desc).first
+  end
+
+  def today_record
+    attendances.where(check_in: Date.current.all_day).first
+  end
+
+  def checked_in?
+    open_attendance.present?
+  end
+
+  def completed_attendance_today?
+    today_record.present? && today_record.check_out.present?
+  end
+
+  def can_check_in?
+    !checked_in? && today_record.nil?
+  end
+
+  def process_check_in!
+    return false unless can_check_in?
+    attendances.create!(check_in: Time.current, timestamp: Time.current)
+    true
+  end
+
+  def process_check_out!
+    attendance = open_attendance
+    return false unless attendance
+
+    check_out_time = Time.current
+    attendance.update!(
+      check_out: check_out_time,
+      timestamp: check_out_time
+    )
+    true
+  end
+
   # --- End Payroll Calculation Logic ---
 
   def as_json(options = {})

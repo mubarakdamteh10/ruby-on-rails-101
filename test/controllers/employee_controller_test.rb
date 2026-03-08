@@ -15,28 +15,31 @@ class EmployeeControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
-  test "should get show_all (root)" do
-    # Arrange (Already handled in setup)
-
-    # Act
-    get root_url
-
-    # Assert
-    assert_response :success
-  end
-
-  test "should get new" do
-    # Arrange (Already handled in setup)
-
-    # Act
-    get new_employee_url
-
-    # Assert
-    assert_response :success
-  end
-
-  test "should create employee" do
+  test "admin should get show_all (root)" do
     # Arrange
+    post sign_in_path, params: { role: "admin" }
+
+    # Act
+    get admin_root_url
+
+    # Assert
+    assert_response :success
+  end
+
+  test "admin should get new employee form" do
+    # Arrange
+    post sign_in_path, params: { role: "admin" }
+
+    # Act
+    get new_admin_employee_url
+
+    # Assert
+    assert_response :success
+  end
+
+  test "admin should create employee" do
+    # Arrange
+    post sign_in_path, params: { role: "admin" }
     params = {
       employee: {
         name: "New Employee",
@@ -51,58 +54,95 @@ class EmployeeControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    # Act & Assert
+    # Act
     assert_difference("Employee.count", 1) do
-      post employees_url, params: params
+      post admin_employees_url, params: params
     end
 
-    # Assert (Session and redirection)
-    assert_redirected_to root_url
+    # Assert
+    assert_redirected_to admin_root_url
     assert_equal "Employee created successfully.", flash[:notice]
   end
 
-  test "should show employee" do
-    # Arrange (Already handled in setup)
-
-    # Act
-    get employee_url(@employee)
-
-    # Assert
-    assert_response :success
-  end
-
-  test "should get edit" do
-    # Arrange (Already handled in setup)
-
-    # Act
-    get edit_employee_url(@employee)
-
-    # Assert
-    assert_response :success
-  end
-
-  test "should update employee" do
+  test "admin should show employee details" do
     # Arrange
-    update_params = { employee: { name: "Updated Name" } }
+    post sign_in_path, params: { role: "admin" }
 
     # Act
-    patch employee_url(@employee), params: update_params
+    get admin_employee_url(@employee)
 
     # Assert
-    assert_redirected_to root_url
+    assert_response :success
+  end
+
+  test "admin should get edit employee form" do
+    # Arrange
+    post sign_in_path, params: { role: "admin" }
+
+    # Act
+    get edit_admin_employee_url(@employee)
+
+    # Assert
+    assert_response :success
+  end
+
+  test "admin should update employee" do
+    # Arrange
+    post sign_in_path, params: { role: "admin" }
+    update_params = { employee: { name: "Updated Name", salary: 55000, is_tax: true } }
+
+    # Act
+    patch admin_employee_url(@employee), params: update_params
+
+    # Assert
+    assert_redirected_to admin_root_url
     @employee.reload
     assert_equal "Updated Name", @employee.name
   end
 
-  test "should destroy employee" do
-    # Arrange (Already handled in setup)
+  test "admin should destroy employee" do
+    # Arrange
+    post sign_in_path, params: { role: "admin" }
 
-    # Act & Assert
+    # Act
     assert_difference("Employee.count", -1) do
-      delete employee_url(@employee)
+      delete admin_employee_url(@employee)
     end
 
     # Assert
-    assert_redirected_to root_url
+    assert_redirected_to admin_root_url
+  end
+
+  test "employee should be denied access to all admin employee management" do
+    # Arrange
+    delete sign_out_path
+    post sign_in_path, params: { employee_code: @employee.code, employee_name: @employee.name }
+
+    # Act & Assert
+    get admin_employees_url
+    assert_redirected_to sign_in_option_path
+
+    get admin_root_url
+    assert_redirected_to sign_in_option_path
+
+    get new_admin_employee_url
+    assert_redirected_to sign_in_option_path
+
+    post admin_employees_url, params: { employee: { name: "Hack" } }
+    assert_redirected_to sign_in_option_path
+
+    get admin_employee_url(@employee)
+    assert_redirected_to sign_in_option_path
+
+    get edit_admin_employee_url(@employee)
+    assert_redirected_to sign_in_option_path
+
+    patch admin_employee_url(@employee), params: { employee: { name: "Hack" } }
+    assert_redirected_to sign_in_option_path
+
+    delete admin_employee_url(@employee)
+    assert_redirected_to sign_in_option_path
+
+    assert_equal "Access denied", flash[:alert]
   end
 end
