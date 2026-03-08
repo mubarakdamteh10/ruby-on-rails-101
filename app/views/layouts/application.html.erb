@@ -62,7 +62,8 @@
                 <%= link_to "Payroll", admin_payroll_index_path, class: (controller_name == 'payroll' ? active_link_class : inactive_link_class) %>
                 <%= link_to "Salary Estimator", salary_calculator_path, class: (current_page?(salary_calculator_path) ? active_link_class : inactive_link_class) %>
               <% elsif employee? %>
-                <%= link_to "Attendance", employee_attendance_path(session[:employee_code]), class: (controller_name == 'attendances' ? active_link_class : inactive_link_class) %>
+                <%= link_to "Attendance", employee_attendance_path(session[:employee_code]), class: (current_page?(employee_attendance_path(session[:employee_code] || "")) ? active_link_class : inactive_link_class) %>
+                <%= link_to "Payroll", employee_payroll_path, class: (current_page?(employee_payroll_path) ? active_link_class : inactive_link_class) %>
                 <%= link_to "Salary Estimator", salary_calculator_path, class: (current_page?(salary_calculator_path) ? active_link_class : inactive_link_class) %>
               <% end %>
             </div>
@@ -165,6 +166,24 @@
     <% end %>
 
     <main class="container mx-auto pb-12">
+      <% if notice %>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 px-4 py-3 rounded-xl relative flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300" role="alert">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="block sm:inline font-bold text-sm"><%= notice %></span>
+          </div>
+        </div>
+      <% end %>
+
+      <% if alert %>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          <div class="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-400 px-4 py-3 rounded-xl relative flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300" role="alert">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="block sm:inline font-bold text-sm"><%= alert %></span>
+          </div>
+        </div>
+      <% end %>
+
       <%= yield %>
     </main>
   </body>

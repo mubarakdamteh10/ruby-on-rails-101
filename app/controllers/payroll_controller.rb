@@ -1,5 +1,10 @@
 class PayrollController < ApplicationController
-  before_action :ensure_admin!
+  before_action :ensure_admin!, only: [ :index, :calculate ]
+  before_action :ensure_logged_in!
+
+  def employee_index
+    @payrolls = Payroll.where(employee_code: session[:employee_code]).order(year: :desc, month: :desc)
+  end
 
   def index
     @month = params[:month]&.to_i || Time.current.month
@@ -42,5 +47,9 @@ class PayrollController < ApplicationController
 
   def ensure_admin!
     redirect_to sign_in_option_path, alert: "Access denied" unless admin?
+  end
+
+  def ensure_logged_in!
+    redirect_to sign_in_option_path, alert: "Please sign in first" unless current_user_role.present?
   end
 end

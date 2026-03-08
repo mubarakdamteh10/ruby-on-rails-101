@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   end
 
   # Employee restricted routes (non-namespaced)
+  get "my_payroll", to: "payroll#employee_index", as: :employee_payroll
+
   scope :attendances do
     get ":code", to: "attendances#show", as: :employee_attendance
     post ":code/check_in", to: "attendances#check_in", as: :check_in_attendance
