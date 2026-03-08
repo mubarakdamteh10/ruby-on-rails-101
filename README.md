@@ -136,10 +136,11 @@ The current Minimum Viable Product (MVP) includes the following core modules:
 - **Adaptive UI**: Navigation menus and features dynamically adjust based on user role.
 - **Accessibility**: Native dark/light mode persistence and 100% mobile responsiveness.
 
-| Feature | Admin | Employee |
-|:---|:---:|:---:|
-| **Employees** | Manage | No Access |
-| **Attendance** | View All | Own Only |
-| **Payroll** | Calculate | View Status |
-| **Salary Estimator** | Access | Access |
-| **Theme** | Toggle | Toggle |
+| Feature | Admin Role | Employee Role |
+| :--- | :--- | :--- |
+| **Employee Mgmt** | Full CRUD & Identity Search | Access Prohibited |
+| **Attendance** | Multi-user History & Overtime Logs | Personalized Check-in/out & History |
+| **Payroll Engine** | Bulk Month/Year Calculation | Individual Salary History & Slips |
+| **Salary Tool** | Real-time Estimation Metrics | Real-time Estimation Metrics |
+| **Theme System** | Global Dark/Light Toggle | Global Dark/Light Toggle |
+| **Test Coverage** | Unit, Functional, & System (AAA) | Unit, Functional, & System (AAA) |
